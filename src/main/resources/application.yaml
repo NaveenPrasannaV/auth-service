@@ -4,8 +4,8 @@ server:
 spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/secureflow
-    username: admin
-    password: password
+    username: postgres
+    password: 1234
 
   sql:
     init:
@@ -13,4 +13,4 @@ spring:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.r2dbc: DEBUG
