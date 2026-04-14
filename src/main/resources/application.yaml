@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/secureflow
+    username: admin
+    password: password
+
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    org.springframework.security: DEBUG
