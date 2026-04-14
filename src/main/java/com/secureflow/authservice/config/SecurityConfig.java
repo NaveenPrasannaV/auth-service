@@ -1,6 +1,8 @@
 package com.secureflow.authservice.config;
 
+import com.secureflow.authservice.security.AccessDeniedHandler;
 import com.secureflow.authservice.security.JwtAuthenticationFilter;
+import com.secureflow.authservice.security.UnauthorizedHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +15,17 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtFilter;
+    private final UnauthorizedHandler unauthorizedHandler;
+    private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .csrf(csrfSpec -> csrfSpec.disable())
+                .exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec
+                        .authenticationEntryPoint(unauthorizedHandler)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers("/auth/**", "/test/**").permitAll()  //Public access
                         .pathMatchers("/admin/**").hasRole("ADMIN") //Only admin access
